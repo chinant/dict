@@ -1,0 +1,2 @@
+# dict
+translate the word
