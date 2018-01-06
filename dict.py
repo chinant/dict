@@ -3,12 +3,13 @@
 from bs4 import BeautifulSoup
 import sys, re, pdb
 from urllib.request import urlopen
+from urllib.parse import quote
 
 if len(sys.argv) != 2:
     print('usage: %s <word>' % sys.argv[0])
 else:
     word = re.sub(' ', '_', sys.argv[1]) #enable translate a sentence
-    html = urlopen('http://www.iciba.com/%s' % word).read().decode('utf8')
+    html = urlopen('http://www.iciba.com/%s' % quote(word)).read().decode('utf8')
     soup = BeautifulSoup(html, 'html.parser')
     context = soup.find("div", class_="in-base")
     if context is None:
