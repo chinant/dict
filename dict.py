@@ -22,6 +22,13 @@ else:
     if context is None:
         print('Sorry, cannot translate the word(s)')
     else:
+        speaks = context.find_all("div", class_="base-speak")
+        for speak in  speaks:
+            result = re.sub('\n', ' ', speak.text)
+            result = re.sub('&nbsp;', ' ', result)
+            result = result.lstrip()
+            print(result)
+
         rows = context.find_all("li", class_="clearfix")
         for row in rows:
             result = re.sub('\n', ' ', row.text)
