@@ -11,10 +11,11 @@ headers = {'User-Agent': user_agent}
 
 data = {}
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
     print('usage: %s <word>' % sys.argv[0])
 else:
-    word = re.sub(' ', '_', sys.argv[1]) #enable translate a sentence
+    # word = re.sub('%20', '_', sys.argv[1]) #enable translate a sentence
+    word = '%20'.join(sys.argv[1:]) #enable translate a sentence
     req = Request('http://www.iciba.com/%s' % quote(word),data,headers)
     html = urlopen(req).read().decode('utf8')
     soup = BeautifulSoup(html, 'html.parser')
