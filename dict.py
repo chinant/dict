@@ -16,22 +16,27 @@ if len(sys.argv) < 2:
 else:
     # word = re.sub('%20', '_', sys.argv[1]) #enable translate a sentence
     word = '%20'.join(sys.argv[1:]) #enable translate a sentence
-    req = Request('http://www.iciba.com/%s' % quote(word),data,headers)
+    req = Request('http://iciba.com/word?w=%s' % quote(word),data,headers)
     html = urlopen(req).read().decode('utf8')
     soup = BeautifulSoup(html, 'html.parser')
-    context = soup.find("div", class_="in-base")
+    context = soup.find("div", class_="Mean_mean__1ydUq")
     if context is None:
         print('Sorry, cannot translate the word(s)')
     else:
-        speaks = context.find_all("div", class_="base-speak")
-        for speak in  speaks:
-            result = re.sub('\n', ' ', speak.text)
-            result = re.sub('&nbsp;', ' ', result)
-            result = result.lstrip()
-            print(result)
+        speaks = context.find_all("ul", class_="Mean_symbols__5dQX7")
+        speak = speaks[0].find_all('li')
+        speak_result = ''
+        for line in  speak:
+            result = re.sub('\n', ' ', line.text)
+            #result = re.sub('&nbsp;', ' ', result)
+            speak_result += result.lstrip()
+            speak_result += ' '
+        print(speak_result)
 
-        rows = context.find_all("li", class_="clearfix")
+        ul = context.find_all("ul", class_="Mean_part__1RA2V")
+        rows = ul[0].find_all('li')
         for row in rows:
+            # print(row.text)
             result = re.sub('\n', ' ', row.text)
             result = re.sub('&nbsp;', ' ', result)
             result = re.sub(r'\s+', ' ', result)
